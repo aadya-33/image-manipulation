@@ -25,6 +25,28 @@ def resize(img, new_w, new_h):
     cols = (np.arange(new_w) * w / new_w).astype(int)
     return img[rows][:, cols]
 
-def rescale(img, factor):
+def rescale(img, factor=1.5):
     h, w = img.shape[:2]
     return resize(img, max(1, int(w * factor)), max(1, int(h * factor)))
+
+def grayscale(img):
+    b = img[:, :, 0] # exctracting the blue channel
+    g = img[:, :, 1] # extracting the green channel
+    r = img[:, :, 2] # extracting the red channel
+    g = 0.114 * b + 0.587 * g + 0.299 * r # multiplying by certain weights, we get greyscale image
+    return g.astype(int)
+
+def negetive(img):
+    return 255 - img
+
+def brightness(img, percent=50):
+    res = img.astype(np.float32) * (1 + percent / 100)
+    return np.clip(res, 0, 255).astype(np.uint)
+
+def contrast(img, percent=50):
+    res = img.astype(np.float32) * (percent/100)
+    return np.clip(res, 0, 255).astype(np.uint8)
+
+def threshold(img, t=127):
+    gray = img if img.ndim == 2 else grayscale(img)
+    return np.where(gray > t, 255, 0).astype(np.uint8)
