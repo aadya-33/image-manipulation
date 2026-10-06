@@ -50,3 +50,38 @@ def contrast(img, percent=50):
 def threshold(img, t=127):
     gray = img if img.ndim == 2 else grayscale(img)
     return np.where(gray > t, 255, 0).astype(np.uint8)
+
+def box_blur(img, size=3):
+    p = size // 2
+    h, w = img.shape[:2]
+
+    pad = ((p, p), (p, p)) if img.ndim == 2 else ((p, p), (p, p), (0, 0))
+    padded = np.pad(img.astype(np.float32), pad, mode="edge")
+
+    out = np.zeros(img.shape, dtype=np.float32)
+    for i in range(size):
+        for j in range(size):
+            out += padded[i:i + h, j:j + w]  
+
+    out /= size * size                     
+    return np.clip(out, 0, 255).astype(np.uint8)
+
+def gaussian_blur(img, size=5, sigma=1.0):
+    p = size // 2
+    h, w = img.shape[:2]
+    ax = np.arange(size) - p
+    k = np.exp(-(ax ** 2) / (2 * sigma ** 2))
+    k /= k.sum()
+
+    pad = ((p, p), (p, p)) if img.ndim == 2 else ((p, p), (p, p), (0, 0))
+    padded = np.pad(img.astype(np.float32), pad, mode="edge")
+
+    tmp = np.zeros((h + 2 * p, w) + img.shape[2:], dtype=np.float32)
+    for j in range(size):
+        tmp += k[j] * padded[:, j:j + w]
+
+    out = np.zeros(img.shape, dtype=np.float32)
+    for i in range(size):
+        out += k[i] * tmp[i:i + h]
+
+    return np.clip(out, 0, 255).astype(np.uint8)
