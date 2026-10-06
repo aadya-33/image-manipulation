@@ -2,7 +2,7 @@ import numpy as np
 import cv2 as cv
 import os
 import sys
-from image import flip_horizontal, flip_vertical, rotate_90deg_cw, rotate_180deg_cw, rotate_270deg_cw, crop, resize, rescale, grayscale, negetive, brightness, contrast, threshold
+from image import flip_horizontal, flip_vertical, rotate_90deg_cw, rotate_180deg_cw, rotate_270deg_cw, crop, resize, rescale, grayscale, negetive, brightness, contrast, threshold, box_blur, gaussian_blur
 
 # defining functions that only take user inputs greater than 0
 def safe_input_float(str):
@@ -50,7 +50,11 @@ while(True):
     print("10. Negetive/invert image")
     print("11. Adjust brightness")
     print("12. Adjust contrast")
-    print("13. Treshold")
+    print("13. Treshold\n")
+
+    print("Filters")
+    print("14. Box blur")
+    print("15. Gaussian blur")
     print("\n0. Exit")
     choice = input("Enter your choice: ")
 
@@ -105,6 +109,14 @@ while(True):
             tresh = safe_input_float("Enter the treshold value (0 to 225): ")
             img_tresh = threshold(img, tresh)
             save("outputs/img_tresh.jpg", img_tresh)
+        case "14":
+            size = int(safe_input_float("Enter the size of the box filter: "))
+            img_box_blur = box_blur(img, size)
+            save("outputs/img_box_blur.jpg", img_box_blur)
+        case "15":
+            size = int(safe_input_float("Enter the size of the gaussian filter: "))
+            img_gaussian_blur = gaussian_blur(img, size)
+            save("outputs/img_gaussian_blur.jpg", img_gaussian_blur)
         case "0":
             break
         case _:
