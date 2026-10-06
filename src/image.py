@@ -85,3 +85,10 @@ def gaussian_blur(img, size=5, sigma=1.0):
         out += k[i] * tmp[i:i + h]
 
     return np.clip(out, 0, 255).astype(np.uint8)
+
+def alpha_blend(source, target, alpha=0.5):
+    # resize source to target's size using your resize function
+    source = resize(source, target.shape[1], target.shape[0])
+
+    out = alpha * source.astype(float) + (1 - alpha) * target.astype(float)
+    return np.clip(out, 0, 255).astype(np.uint8)
