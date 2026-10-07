@@ -2,7 +2,7 @@ import numpy as np
 import cv2 as cv
 import os
 import sys
-from image import flip_horizontal, flip_vertical, rotate_90deg_cw, rotate_180deg_cw, rotate_270deg_cw, crop, resize, rescale, grayscale, negetive, brightness, contrast, threshold, box_blur, gaussian_blur,alpha_blend , sharpen
+from image import flip_horizontal, flip_vertical, rotate_90deg_cw, rotate_180deg_cw, rotate_270deg_cw, crop, resize, rescale, grayscale, negetive, brightness, contrast, threshold, box_blur, gaussian_blur,alpha_blend , sharpen, hue_shift, saturation, tint
 
 # defining functions that only take user inputs greater than 0
 def safe_input_float(str):
@@ -59,6 +59,16 @@ while(True):
     
     print("\nBlend")
     print("17. Alpha blend two images")
+    print("18. Multiply two images")
+    print("19. Screen two images")
+    print("20. Overlay two images")
+    print("21. Difference two images")
+
+    print("\nColour manipulation")
+    print("22. Adjust hue")
+    print("23. Adjust saturation")
+    print("24. Add tint")
+
     print("\n0. Exit")
     choice = input("Enter your choice: ")
 
@@ -133,6 +143,18 @@ while(True):
             alpha = safe_input_float("Enter the alpha value (between 0 and 1): ")
             img_alpha_blend = alpha_blend(img2, img, alpha)
             save("outputs/img_alpha_blend.jpg", img_alpha_blend)
+        case "22":
+            hue = safe_input_float("Enter the hue value (between 0 and 179): ")
+            img_hue = hue_shift(img, hue)
+            save("outputs/img_hue.jpg", img_hue)
+        case "23":
+            sat = int(safe_input_float("Enter the saturation value (between 0 and 255): "))
+            img_saturation = saturation(img, sat)
+            save("outputs/img_saturation.jpg", img_saturation)
+        case "24":
+            t = int(safe_input_float("Enter the tint value (between 0 and 255): "))
+            img_tint = tint(img, t)
+            save("outputs/img_tint.jpg", img_tint)
         case "0":
             break
         case _:

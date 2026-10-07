@@ -97,3 +97,22 @@ def sharpen(img, amount=1.0):
     blurred = gaussian_blur(img, 5, 1.0).astype(np.float32)
     result = img.astype(np.float32) + amount * (img - blurred)
     return np.clip(result, 0, 255).astype(np.uint8)
+
+def hue_shift(img, degrees=90):
+    c, s = np.cos(np.radians(degrees)), np.sin(np.radians(degrees))
+    M = np.array([
+        [0.213 + 0.787*c - 0.213*s, 0.715 - 0.715*c - 0.715*s, 0.072 - 0.072*c + 0.928*s],
+        [0.213 - 0.213*c + 0.143*s, 0.715 + 0.285*c + 0.140*s, 0.072 - 0.072*c - 0.283*s],
+        [0.213 - 0.213*c - 0.787*s, 0.715 - 0.715*c + 0.715*s, 0.072 + 0.928*c + 0.072*s],
+    ])
+    out = img.astype(float) @ M.T
+    return np.clip(out, 0, 255).astype(np.uint8)
+
+def saturation(img, factor=1.5):
+    gray = (img @ np.array([0.299, 0.587, 0.114]))[..., None]
+    out = gray + factor * (img - gray)
+    return np.clip(out, 0, 255).astype(np.uint8)
+
+def tint(img, color=(255, 0, 128), strength=0.3):
+    out = (1 - strength) * img + strength * np.array(color)
+    return np.clip(out, 0, 255).astype(np.uint8)
