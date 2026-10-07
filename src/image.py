@@ -92,3 +92,8 @@ def alpha_blend(source, target, alpha=0.5):
 
     out = alpha * source.astype(float) + (1 - alpha) * target.astype(float)
     return np.clip(out, 0, 255).astype(np.uint8)
+
+def sharpen(img, amount=1.0):
+    blurred = gaussian_blur(img, 5, 1.0).astype(np.float32)
+    result = img.astype(np.float32) + amount * (img - blurred)
+    return np.clip(result, 0, 255).astype(np.uint8)

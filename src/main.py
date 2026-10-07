@@ -2,7 +2,7 @@ import numpy as np
 import cv2 as cv
 import os
 import sys
-from image import flip_horizontal, flip_vertical, rotate_90deg_cw, rotate_180deg_cw, rotate_270deg_cw, crop, resize, rescale, grayscale, negetive, brightness, contrast, threshold, box_blur, gaussian_blur,alpha_blend
+from image import flip_horizontal, flip_vertical, rotate_90deg_cw, rotate_180deg_cw, rotate_270deg_cw, crop, resize, rescale, grayscale, negetive, brightness, contrast, threshold, box_blur, gaussian_blur,alpha_blend , sharpen
 
 # defining functions that only take user inputs greater than 0
 def safe_input_float(str):
@@ -55,9 +55,10 @@ while(True):
     print("Filters")
     print("14. Box blur")
     print("15. Gaussian blur")
+    print("16. Sharpen image")
     
     print("\nBlend")
-    print("16. Alpha blend two images")
+    print("17. Alpha blend two images")
     print("\n0. Exit")
     choice = input("Enter your choice: ")
 
@@ -121,6 +122,9 @@ while(True):
             img_gaussian_blur = gaussian_blur(img, size)
             save("outputs/img_gaussian_blur.jpg", img_gaussian_blur)
         case "16":
+            img_sharpen = sharpen(img)
+            save("outputs/img_sharpen.jpg", img_sharpen)
+        case "17":
             path2 = input("Enter the pathname of the second image: ")
             img2 = cv.imread(path2)
             if img2 is None:
