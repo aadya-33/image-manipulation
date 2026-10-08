@@ -2,7 +2,7 @@ import numpy as np
 import cv2 as cv
 import os
 import sys
-from image import flip_horizontal, flip_vertical, rotate_90deg_cw, rotate_180deg_cw, rotate_270deg_cw, crop, resize, rescale, grayscale, negetive, brightness, contrast, threshold, box_blur, gaussian_blur,alpha_blend , sharpen, hue_shift, saturation, tint
+from image import flip_horizontal, flip_vertical, rotate_90deg_cw, rotate_180deg_cw, rotate_270deg_cw, crop, resize, rescale, grayscale, negetive, brightness, contrast, threshold, box_blur, gaussian_blur,alpha_blend, multiply,screen,overlay,difference , sharpen, hue_shift, saturation, tint
 
 # defining functions that only take user inputs greater than 0
 def safe_input_float(str):
@@ -143,6 +143,39 @@ while(True):
             alpha = safe_input_float("Enter the alpha value (between 0 and 1): ")
             img_alpha_blend = alpha_blend(img2, img, alpha)
             save("outputs/img_alpha_blend.jpg", img_alpha_blend)
+
+        case "18":
+            path2 = input("Enter the pathname of the second image: ")
+            img2 = cv.imread(path2)
+            if img2 is None:
+                print("Error: Could not read the second image. Check the file path and re run the code")
+                continue
+            img_multiply = multiply(img2, img)
+            save("outputs/img_multiply.jpg", img_multiply)
+        case "19":
+            path2 = input("Enter the pathname of the second image: ")   
+            img2 = cv.imread(path2)
+            if img2 is None:
+                print("Error: Could not read the second image. Check the file path and re run the code")
+                continue
+            img_screen = screen(img2, img)
+            save("outputs/img_screen.jpg", img_screen)  
+        case "20":
+            path2 = input("Enter the pathname of the second image: ")
+            img2 = cv.imread(path2)
+            if img2 is None:
+                print("Error: Could not read the second image. Check the file path and re run the code")
+                continue
+            img_overlay = overlay(img2, img)
+            save("outputs/img_overlay.jpg", img_overlay)
+        case "21":
+            path2 = input("Enter the pathname of the second image: ")
+            img2 = cv.imread(path2)
+            if img2 is None:
+                print("Error: Could not read the second image. Check the file path and re run the code")
+                continue
+            img_difference = difference(img2, img)
+            save("outputs/img_difference.jpg", img_difference)
         case "22":
             hue = safe_input_float("Enter the hue value (between 0 and 179): ")
             img_hue = hue_shift(img, hue)

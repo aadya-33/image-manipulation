@@ -93,6 +93,39 @@ def alpha_blend(source, target, alpha=0.5):
     out = alpha * source.astype(float) + (1 - alpha) * target.astype(float)
     return np.clip(out, 0, 255).astype(np.uint8)
 
+def multiply(source, target):
+    if source.shape[:2] != target.shape[:2]:
+        source = resize(source, target.shape[1], target.shape[0])
+    a = target / 255.0
+    b = source / 255.0
+    return (a * b * 255).astype(np.uint8)
+
+
+def screen(source, target):
+    if source.shape[:2] != target.shape[:2]:
+        source = resize(source, target.shape[1], target.shape[0])
+    a = target / 255.0
+    b = source / 255.0
+    return ((1 - (1 - a) * (1 - b)) * 255).astype(np.uint8)
+
+
+def overlay(source, target):
+    if source.shape[:2] != target.shape[:2]:
+        source = resize(source, target.shape[1], target.shape[0])
+    a = target / 255.0
+    b = source / 255.0
+    out = np.where(a < 0.5, 2 * a * b, 1 - 2 * (1 - a) * (1 - b))
+    return (out * 255).astype(np.uint8)
+
+
+def difference(source, target):
+    if source.shape[:2] != target.shape[:2]:
+        source = resize(source, target.shape[1], target.shape[0])
+    a = target.astype(float)
+    b = source.astype(float)
+    return np.abs(a - b).astype(np.uint8)
+
+
 def sharpen(img, amount=1.0):
     blurred = gaussian_blur(img, 5, 1.0).astype(np.float32)
     result = img.astype(np.float32) + amount * (img - blurred)
